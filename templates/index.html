@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hawaar Al-Zaki</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> <!-- Include Font Awesome CSS -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2faff; /* Light blue background color */
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            background-color: #fff; /* White navbar background color */
+            color: #f2faff; /* Blue color for navbar text */
+            padding: 10px 20px; /* Increased padding */
+            text-align: center;
+            font-size: 24px; /* Increased font size */
+            font-weight: bold;
+            width: 100%; /* Navbar width set to 100% */
+            box-sizing: border-box; /* Include padding and border in width */
+            height: auto; /* Allow height to adjust */
+            min-height: 120px;
+        }
+        .logo-container {
+            position: absolute;
+            top: 10px;
+            left: 20px; /* Increased left spacing */
+        }
+        .logo {
+            width: 120px; /* Increased logo size */
+            height: 100px; /* Increased logo size */
+        }
+
+        .chat-container {
+            width: 80%; /* Set width to 80% */
+            margin: 0 auto; /* Center the chat container */
+            margin-top: 30px !important;
+            max-height: 1000px !important; /* Set a fixed height */
+            overflow-y: auto; /* Enable vertical scrollbar if content exceeds height */
+            border-radius: 15px; /* Add rounded borders */
+            border: 1px solid #ccc; /* Add border */
+            padding: 10px; /* Add padding */
+        }
+
+        .chatbox {
+            background-color: transparent;
+            padding: 10px;
+            overflow-y: auto; /* Make the chatbox vertically scrollable */
+            max-height: 300px; /* Set a maximum height for the chatbox */
+            max-width: 100%;
+        }
+
+        .message {
+            clear: both;
+            margin-bottom: 10px;
+        }
+
+        .avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            float: left;
+            margin-right: 10px;
+        }
+
+        .message-content {
+            overflow: hidden;
+        }
+
+        .name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .bubble {
+            max-width: 70%;
+            border-radius: 15px;
+            padding: 10px 15px;
+            color: #fff;
+            position: relative;
+            display: inline-block;
+        }
+
+        .user-message .bubble {
+            background-color: #acafb0;
+        }
+
+        .bot-message .bubble {
+            background-color: #00bcd4;
+        }
+
+        .input-container {
+            padding: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-field {
+            flex: 1;
+            padding: 8px;
+            border-radius: 20px;
+            border: 1px solid #ccc;
+            margin-right: 10px;
+            outline: none;
+        }
+
+        .send-button {
+            background-color: #00bcd4; /* Light blue color for send button */
+            color: #fff;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .send-button:hover {
+            background-color: #008ba3; /* Darker blue on hover */
+        }
+
+        .speech-icon {
+            color: #fff; /* White color for icon */
+            background-color: #00bcd4; /* Blue color for button */
+            padding: 8px;
+            border-radius: 20px;
+            border: none;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar" id="navbar">
+        <div class="logo-container">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo" id="logo">
+        </div>
+        <div style="margin-top: 30px !important;">
+            <span style="color: #00bcd4; font-size: 40px; ">Hawaar Al-Zaki</span>
+        </div>
+    </div>
+    <div class="chat-container"> <!-- Fixed width and height -->
+        <div class="chatbox" id="chatbox">
+            <!-- Initial bot message -->
+            <div class="message bot-message">
+                <img src="{{ url_for('static', filename='bot.png') }}" alt="ChatGPT" class="avatar">
+                <div class="message-content">
+                    <div class="name">Hawaar Al-Zaki</div>
+                    <div class="bubble">Hello, this is Hawar Al-Zaki. How may I help you?</div>
+                </div>
+            </div>
+        </div>
+        <!-- Input container -->
+        <div class="input-container">
+            <input type="text" id="user-input" class="input-field" placeholder="Type your message..." onkeydown="handleKeyPress(event)">
+            <button onclick="sendMessage()" class="speech-icon"><i class="fas fa-microphone"></i></button>
+            <button onclick="sendMessage()" class="send-button">Send</button>
+        </div>
+    </div>
+
+    <script>
+        function sendMessage() {
+            var userInput = document.getElementById("user-input").value;
+            if (userInput.trim() === "") return;
+            sendMessageToServer(userInput);
+        }
+    
+        function handleKeyPress(event) {
+            if (event.key === "Enter") {
+                sendMessage();
+            }
+        }
+    
+        function sendMessageToServer(userInput) {
+            var chatbox = document.getElementById("chatbox");
+    
+            // Create user message elements
+            var userMessage = document.createElement("div");
+            userMessage.classList.add("message", "user-message");
+            userMessage.innerHTML = `
+                <img src="{{ url_for('static', filename='user.png') }}" alt="User" class="avatar">
+                <div class="message-content">
+                    <div class="name">You</div>
+                    <div class="bubble">${userInput}</div>
+                </div>
+            `;
+            chatbox.appendChild(userMessage);
+    
+            // Send user message to the server
+            fetch('/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: 'user_message=' + encodeURIComponent(userInput)
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Create bot message elements
+                var botMessage = document.createElement("div");
+                botMessage.classList.add("message", "bot-message");
+                botMessage.innerHTML = `
+                    <img src="{{ url_for('static', filename='bot.png') }}" alt="ChatGPT" class="avatar">
+                    <div class="message-content">
+                        <div class="name">Hawaar Al-Zaki</div>
+                        <div class="bubble">${data.bot_response}</div>
+                        <i class="fas fa-volume-up" style="color: #00bcd4; margin-left: 5px; vertical-align: middle;"></i> <!-- Speaker icon -->
+                    </div>
+                `;
+                chatbox.appendChild(botMessage);
+                chatbox.scrollTop = chatbox.scrollHeight; // Scroll to the bottom
+            })
+            .catch(error => console.error('Error:', error));
+    
+            // Clear the user input field
+            document.getElementById("user-input").value = "";
+        }
+    </script>
+    
+    
+    
+</body>
+</html>
