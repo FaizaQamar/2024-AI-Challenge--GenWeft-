@@ -42,7 +42,7 @@ Our goal is to make Islamic knowledge more accessible and trustworthy, particula
 
 ## Evaluation 
 Hawaar Al-Zaki demonstrates exceptional performance across various evaluation metrics, showing impressive precision, recall, and F1-score metrics, coupled with a remarkable human evaluation score of 91.8%. Our model distinguishes itself significantly from leading platforms, setting a new standard for efficiency, accessibility, and user engagement.
-![Hawaar Al-Zaki Logo](https://github.com/FaizaQamar/2024-AI-Challenge--GenWeft-/blob/main/static/evaluation.PNG)
+![Hawaar Al-Zaki Logo](https://github.com/FaizaQamar/2024-AI-Challenge--GenWeft-/blob/main/static/evaluation1.PNG)
 
 ## Feedback
 
