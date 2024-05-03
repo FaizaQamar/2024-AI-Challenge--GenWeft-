@@ -22,10 +22,10 @@ db = FAISS.load_local("./db", embeddings, allow_dangerous_deserialization=True)
 
 #################################
 #set huggingface api token
-os.environ["HUGGINGFACEHUB_API_TOKEN"] = "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"
+os.environ["HUGGINGFACEHUB_API_TOKEN"] = "" #YOUR TOKEN HERE
 repo_id = "mistralai/Mistral-7B-Instruct-v0.1"
 llm = HuggingFaceEndpoint(
-    repo_id=repo_id, max_length=128, temperature=0.2)
+    repo_id=repo_id, max_length=128, temperature=0.1)
 
 ################################
 system_prompt = """
