@@ -35,7 +35,7 @@ Our goal is to make Islamic knowledge more accessible and trustworthy, particula
 ## Getting Started 
 1. Run requirements.txt file to install dependencies:
   `pip install -r requirements.txt`
-2. Obtain your Hugging Face API token from your account settings. User Access Tokens are recommended for authentication. Learn more [here]([url](https://huggingface.co/docs/hub/en/security-tokens)). 
+2. Obtain your Hugging Face API token from your account settings. User Access Tokens are recommended for authentication. Learn more [here](https://huggingface.co/docs/hub/en/security-tokens). 
 3. Edit app.py and replace the token in line 25 with your Hugging Face API token.
    `os.environ["HUGGINGFACEHUB_API_TOKEN"] = "your_token_here"`
 4. Execute `python app.py` to start the Flask app.
